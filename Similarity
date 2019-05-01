@@ -1,0 +1,8 @@
+// Authors: Anh Minh Ta
+// Student number: 300078762
+// Course: ITI 1121-C00
+// Assignment: 4
+// Question: 3
+public interface Similarity {
+	public abstract double score (WordMap a, WordMap b) throws NullPointerException, IllegalArgumentException;
+}

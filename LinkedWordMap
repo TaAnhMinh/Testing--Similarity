@@ -1,0 +1,194 @@
+// Authors: Anh Minh Ta
+// Student number: 300078762
+// Course: ITI 1121-C00
+// Assignment: 4
+// Question: 2
+/**
+ * An implementation of the interface WordMap using linked elements.
+ *
+ * @author Anh Minh Ta
+ */
+
+
+public class LinkedWordMap implements WordMap {
+	class Node {
+		private Node next;
+		private Node prev;
+		private int counter = 1;
+		private String key;
+		public Node(String key) {
+			if (key == null) {
+	    		throw new NullPointerException();
+	    	}
+			this.prev = null;
+			this.key = key;
+			this.next = null;
+		}
+		public Node (Node prev, String key, Node next) {
+			if (key == null) {
+	    		throw new NullPointerException();
+	    	}
+			this.prev = prev;
+			this.key = key;
+			this.next = next;
+		}
+	}
+
+	Node head;
+	int length;
+
+	public LinkedWordMap() {
+		this.head = null;
+		this.length = 0;
+	}
+
+    /**
+     * Returns the logical size of this WordMap. That is the number of
+     * associations currently stored in it.
+     *
+     * @return the logical size of this WordMap
+     */
+
+    public int size() {
+    	return length;
+    }
+
+    /**
+     * Returns true if and only if this WordMap contains the specified
+     * word.
+     *
+     * @param key the specified word
+     * @return true if and only if this WordMap contains the specified word
+     * @throws NullPointerException if the value of the parameter is null
+     */
+
+    public boolean contains(String key) {
+    	if (key == null) {
+    		throw new NullPointerException("Null");
+    	}
+    	Node temp = head;
+    	while (temp != null) {
+    		if (temp.key.equals(key)) {
+    			return true;
+    		}
+    		temp = temp.next;
+    	}
+    	return false;
+    }
+
+    /**
+     * Returns the count associated with the specified word or 0 if
+     * the word is absent.
+     *
+     * @param key the specified word
+     * @return the count associated with the specified word or 0 if absent
+     * @throws NullPointerException if the value of the parameter is null
+     */
+
+    public int get(String key) {
+    	if (key == null) {
+    		throw new NullPointerException();
+    	}
+    	Node temp = head;
+    	int a = 0;
+    	while (temp != null ) {
+			if (temp.key.equals(key)) {
+				a = temp.counter;
+    		}
+    		temp = temp.next;
+    	}
+    	return a;
+    }
+
+    /**
+     * Increments by 1 the counter associated with the specified
+     * word. If the specified word is absent from the data structure,
+     * a new association is created.
+     *
+     * @param key the specified word
+     * @throws NullPointerException if the value of the parameter is null
+     */
+
+    public void update(String key) {
+    	if (key == null) {
+    		throw new NullPointerException();
+    	}
+
+    	if (head == null) {
+    		head = new Node (null, key, null);
+    		length++;
+    	} else {
+    		boolean valid = true;
+    		Node temp = head;
+        	while (temp != null ) {
+    			if (temp.key.equals(key)) {
+    				temp.counter++;
+    				valid = false;
+        		}
+        		temp = temp.next;
+        	}
+        	if (valid) {
+        		Node new_node = new Node (null, key, head);
+        		head.prev = new_node;
+        		head = new_node;
+        		length++;
+        	}
+    	}
+
+    }
+
+    /**
+     * Returns all the keys (words) of this WordMap using their
+     * natural order.
+     *
+     * @return all the keys (words)
+     */
+
+    public String[] keys() {
+        Node temp = head;
+    	String[] list = new String[length];
+    	for (int i = 0 ; i < length; i ++) {
+    		list[i] = temp.key;
+    		temp = temp.next;
+    	}
+    	for(int i=0;i<list.length;i++){
+	        for(int j=0;j<list.length-1;j++){
+	            if(list[j].compareTo(list[j+1]) > 0) {
+	            	String temp2=list[j];
+	                list[j]=list[j+1];
+	                list[j+1]= temp2;
+	            }
+	        }
+		}
+        return list;
+    }
+
+    /**
+     * Returns all the counts associated with keys in this
+     * WordMap. The counts are in the same order as that of the keys
+     * returned by the method keys().
+     *
+     * @return all the counts
+     */
+
+    public Integer[] counts() {
+    	Node temp = head;
+    	Integer[] count = new Integer[length];
+    	int pos = 0;
+    	String[] list = keys();
+    	int i =0;
+    	while (pos < length) {
+    		if (temp.key.equals(list[i])) {
+    			count[pos] = temp.counter;
+    			pos++;
+    			i++;
+    			temp = head;
+    		}else {
+    			temp = temp.next;
+    		}
+    	}
+    	return count;
+    }
+
+
+}

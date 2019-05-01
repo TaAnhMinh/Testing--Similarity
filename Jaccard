@@ -1,0 +1,57 @@
+// Authors: Anh Minh Ta
+// Student number: 300078762
+// Course: ITI 1121-C00
+// Assignment: 4
+// Question: 3
+public class Jaccard extends java.lang.Object implements Similarity{
+	public Jaccard(){
+
+	}
+
+	@Override
+	public double score(WordMap a, WordMap b) throws NullPointerException, IllegalArgumentException {
+		if (a==null || b==null){
+			throw new NullPointerException("Null Value");
+		}
+		if(a.size()==0||b.size()==0){
+			throw new IllegalArgumentException();
+		}
+		String[] wordA = a.keys();
+		String[] wordB = b.keys();
+		String[] intersectList = new String[wordA.length + wordB.length];
+		Integer[] indexListA = new Integer[intersectList.length];
+		Integer[] indexListB = new Integer[intersectList.length];
+
+		int pos = 0;
+		//calculating number of intersections
+		for (int i = 0; i < wordB.length; i++) {
+			for (int x = 0; x < wordA.length; x++) {
+				if (wordA[x].equals(wordB[i])) {
+					intersectList[pos] = wordA[x];
+					indexListA[pos] = x;
+					indexListB[pos] = i;
+					pos++;
+				}
+			}
+		}
+
+		int length = 0;
+		for (int i = 0; i < intersectList.length; i ++) {
+			if (intersectList[i] != null) {
+				length++;
+			}
+		}
+
+		String[] intersectList2 = new String[length];
+		Integer[] indexList2A = new Integer[intersectList2.length];
+		Integer[] indexList2B = new Integer[intersectList2.length];
+		for (int i = 0; i < intersectList2.length; i ++) {
+			intersectList2[i] = intersectList[i];
+			indexList2A[i] = indexListA[i];
+			indexList2B[i] = indexListB[i];
+		}
+		double percentage = (double) intersectList2.length / (wordA.length + wordB.length -  intersectList2.length);
+		return percentage;
+	}
+
+}
